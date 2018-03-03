@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '*^uad6kg0_j=r453fbzc)45n5v)*^g=7v41$2==bx1*hygcfe7'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -75,10 +73,11 @@ WSGI_APPLICATION = 'mix_panel_glue.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'glue_data_one',
-        'USER': 'tim',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': 'gluetestdb.c9h0jgennv0n.us-east-2.rds.amazonaws.com',
+        'NAME': 'glueTestDB',
+        'USER': 'timbaney',
+        'PASSWORD': 'whopper12',
+        'PORT': '5432'
     }
 }
 
@@ -100,7 +99,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -113,7 +111,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
