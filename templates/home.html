@@ -4,7 +4,27 @@
     <meta charset="utf-8">
     <title></title>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <script>
+        sendMPEvent = function (event_type) {
+            var dframe = $('#dataframe-section');
+
+            dframe.append('<div class="df-message"><p class="info">Sending Message to Mix Panel ...</p></div>');
+
+            $.ajax({
+                method: 'POST',
+                url: '/mixpanel/'
+            }).then(function success(response) {
+                console.log('Mix Panel Successfully Sent an Event !');
+            }, function error(response) {
+                console.log('There was an error !');
+                console.log(response);
+            })
+        };
+
+    </script>
 
     <!-- start Mix Panel -->
     <script type="text/javascript">(function (e, a) {
@@ -58,42 +78,65 @@
     })(document, window.mixpanel || []);
     mixpanel.init("a386ab7d6aaff75a01f364c63cb681c3");</script><!-- end Mixpanel -->
 
+
+    <style>
+        .info,
+        .success,
+        .danger {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .info {
+            color: #249ef1;
+        }
+
+        .success {
+            color: #249ef1;
+        }
+
+        .danger {
+            color: #ff385f;
+        }
+    </style>
+
 </head>
 <body>
+
 <div class="container">
     <div class="row">
-        <div class="col-xs-12" id="dataframe-section" style="height: 500px; border: 1px solid black;">
+        <div class="col-xs-12" id="dataframe-section" style="height: 500px; border: 1px solid black; padding-top: 5px">
+        </div>
 
-        </div>
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
                 <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary">Add Object</button>
-                    <button class="btn-danger">Remove Object</button>
+                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
+                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
                 </div>
             </div>
         </div>
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
                 <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary">Add Object</button>
-                    <button class="btn-danger">Remove Object</button>
+                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
+                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
                 </div>
             </div>
         </div>
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
                 <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary">Add Object</button>
-                    <button class="btn-danger">Remove Object</button>
+                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
+                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
                 </div>
             </div>
         </div>
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
                 <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary">Add Object</button>
-                    <button class="btn-danger">Remove Object</button>
+                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
+                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
                 </div>
             </div>
         </div>
