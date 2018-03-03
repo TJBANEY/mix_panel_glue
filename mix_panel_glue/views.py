@@ -4,6 +4,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from mixpanel import Mixpanel, Consumer
 
+import requests
+from requests.auth import HTTPBasicAuth
+
 def view_home(request):
     template = 'home.html'
 
@@ -21,8 +24,8 @@ def mix_panel(request):
     test_user_id = '198909127'
     project_token = 'a386ab7d6aaff75a01f364c63cb681c3'
 
-    # mp = Mixpanel(project_token)
-    mp = Mixpanel(project_token, LoggingConsumer())
+    mp = Mixpanel(project_token)
+    # mp = Mixpanel(project_token, LoggingConsumer())
 
     # Tracks an event, 'Sent Message',
     # with distinct_id user_id
@@ -72,3 +75,37 @@ def mix_panel_queue(request):
             consumer.send(endpoint, message)
 
     return HttpResponse(json.dumps({'success': True}), content_type='application/json')
+
+def mix_panel_query(request):
+    data = {
+        'params': '{"from_date":"2016-01-01", "to_date": "2016-01-07"}',
+        'script': '\'function main(){ return Events(params).groupBy(["name"], mixpanel.reducer.count()) }\''
+    }
+
+    response = requests.post('https://mixpanel.com/api/2.0/jql', data=data, auth=HTTPBasicAuth(username='450e678a456f8ea6bda0d31b168990d9', password=''))
+
+    x = 5
+
+    return HttpResponse(json.dumps({'success': True}), content_type='application/json')
+
+# def mix_pane_queue_queue(request):
+#     # In your time-sensitive process
+#     class EnqueueingConsumer(object):
+#         def send(self, endpoint, json_message):
+#             YOUR_QUEUE.set('mixpanel_queue', JSON.dumps([endpoint, json_message]))
+#
+#     mp = mixpanel.Mixpanel(YOUR_TOKEN, EnqueueingConsumer())
+#
+#     # Track just like you would in any other situation
+#     mp.track(user_id, 'Sent Message')
+#     mp.people_increment(user_id, {
+#         'Messages Sent': 1
+#     })
+#
+#     # In a worker process on another machine
+#     consumer = mixpanel.Consumer()
+#     while True:
+#         job = YOUR_QUEUE.get('mixpanel_queue')
+#         consumer.send(*JSON.loads(job))
+#
+#     return HttpResponse(json.dumps({}), content_type='application/json')

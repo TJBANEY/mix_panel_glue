@@ -17,25 +17,52 @@
                 method: 'POST',
                 url: '/mixpanel/'
             }).then(function success(response) {
+                try {
+                    (function main() {
+                        return Events({
+                            from_date: "2016-01-04",
+                            to_date: "2016-01-04"
+                        }).reduce(mixpanel.reducer.count());
+                    }())
+                } catch (exc) {
+                    console.log(exc)
+                }
+
                 dframe.append('<div class="df-message"><p class="success">Message Received by Mix Panel !</p></div>');
             }, function error(response) {
                 dframe.append('<div class="df-message"><p class="danger">Something went wrong: ' + response.error + '</p></div>');
             })
         };
 
-        queueMPEvents = function (event_type)  {
-            var dframe = $('#dataframe-section');
+        {#        queueMPEvents = function (event_type) {#}
+        {#            var dframe = $('#dataframe-section');#}
+        {##}
+        {#            dframe.append('<div class="df-message"><p class="info">Queueing Events ...</p></div>');#}
+        {##}
+        {#            $.ajax({#}
+        {#                method: 'POST',#}
+        {#                url: '/mixpanel_queue/'#}
+        {#            }).then(function success(response) {#}
+        {#                #}
+        {#                dframe.append('<div class="df-message"><p class="success">Messages Queued for Work !</p></div>');#}
+        {#            }, function error(response) {#}
+        {#                dframe.append('<div class="df-message"><p class="danger">Something went wrong: ' + response.error + '</p></div>');#}
+        {#            })#}
+        {#        };#}
 
-            dframe.append('<div class="df-message"><p class="info">Queueing Events ...</p></div>');
+        queryMP = function () {
+        {#  https://mixpanel.com/api/2.0/jql#}
 
             $.ajax({
                 method: 'POST',
-                url: '/mixpanel_queue/'
-            }).then(function success(response) {
-                dframe.append('<div class="df-message"><p class="success">Messages Queued for Work !</p></div>');
-            }, function error(response) {
-                dframe.append('<div class="df-message"><p class="danger">Something went wrong: ' + response.error + '</p></div>');
-            })
+                url: '/mixpanel_query/'
+            }).then(function success(response){
+                console.log('SUCCESS');
+                console.log(response)
+            }, function error(response){
+                console.log('There was an error running JQL');
+                console.log(response.error)
+            });
         }
 
     </script>
@@ -126,6 +153,7 @@
             <div class="row">
                 <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
                     <button class="btn-info add-obj" onclick="queueMPEvents()">Queue Up</button>
+                    <button class="btn-success add-obj" onclick="queryMP()">Query</button>
                 </div>
             </div>
         </div>
