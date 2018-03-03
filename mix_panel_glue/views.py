@@ -20,6 +20,8 @@ class LoggingConsumer(object):
         self.mp_log.write("{0}::{1}\n".format(endpoint, json_message))
 
 def mix_panel(request):
+    post_data = request.POST
+
     # Since all User IDs are anonymous, do we create this using like an MD5 algorithm based on their IP, location, etc. ?
     test_user_id = '198909127'
     project_token = 'a386ab7d6aaff75a01f364c63cb681c3'
@@ -29,13 +31,13 @@ def mix_panel(request):
 
     # Tracks an event, 'Sent Message',
     # with distinct_id user_id
-    mp.track(test_user_id, 'Sent Message')
+    # mp.track(test_user_id, 'Sent Message')
 
     # You can also include properties to describe
     # the circumstances of the event
-    mp.track(test_user_id, 'Plan Upgraded', {
-        'Old Plan': 'Business',
-        'New Plan': 'Premium'
+    mp.track(test_user_id, 'Item Selected', {
+        'Item Selected': post_data['item'],
+        'Quantity Direction': post_data['direction']
     })
 
     mp.people_set(test_user_id, {
@@ -84,9 +86,12 @@ def mix_panel_query(request):
 
     response = requests.post('https://mixpanel.com/api/2.0/jql', data=data, auth=HTTPBasicAuth(username='450e678a456f8ea6bda0d31b168990d9', password=''))
 
-    x = 5
+    json_object = {
+        'status': response.status_code,
+        'msg': json.loads(response.text)
+    }
 
-    return HttpResponse(json.dumps({'success': True}), content_type='application/json')
+    return HttpResponse(json.dumps(json_object), content_type='application/json')
 
 # def mix_pane_queue_queue(request):
 #     # In your time-sensitive process

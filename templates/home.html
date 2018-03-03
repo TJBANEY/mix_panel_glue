@@ -8,29 +8,30 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 
     <script>
-        sendMPEvent = function (event_type) {
+        sendMPEvent = function (item, direction) {
             var dframe = $('#dataframe-section');
 
             dframe.append('<div class="df-message"><p class="info">Sending Message to Mix Panel ...</p></div>');
+            dframe.animate({ scrollTop: dframe.prop("scrollHeight")}, 200);
 
             $.ajax({
                 method: 'POST',
-                url: '/mixpanel/'
-            }).then(function success(response) {
-                try {
-                    (function main() {
-                        return Events({
-                            from_date: "2016-01-04",
-                            to_date: "2016-01-04"
-                        }).reduce(mixpanel.reducer.count());
-                    }())
-                } catch (exc) {
-                    console.log(exc)
+                url: '/mixpanel/',
+                data: {
+                    'item': item,
+                    'direction': direction
                 }
-
+            }).then(function success(response) {
                 dframe.append('<div class="df-message"><p class="success">Message Received by Mix Panel !</p></div>');
+
+                dframe.animate({ scrollTop: dframe.prop("scrollHeight")}, 200);
+
+                console.log('scrolled');
+
             }, function error(response) {
                 dframe.append('<div class="df-message"><p class="danger">Something went wrong: ' + response.error + '</p></div>');
+
+                dframe.animate({ scrollTop: dframe.prop("scrollHeight")}, 200);
             })
         };
 
@@ -51,15 +52,22 @@
         {#        };#}
 
         queryMP = function () {
-        {#  https://mixpanel.com/api/2.0/jql#}
+            var dframe = $('#dataframe-section');
 
             $.ajax({
                 method: 'POST',
-                url: '/mixpanel_query/'
-            }).then(function success(response){
-                console.log('SUCCESS');
-                console.log(response)
-            }, function error(response){
+                url: '/mixpanel_query/',
+            }).then(function success(response) {
+                if (response.status === 402) {
+                    dframe.append('<div class="df-message"><p class="danger">' + response.msg['error'] + '</p></div>');
+
+                    dframe.animate({ scrollTop: dframe.prop("scrollHeight")}, 200);
+                } else {
+                    dframe.append('<div class="df-message"><p class="success">' + response.msg + '</p></div>');
+
+                    dframe.animate({ scrollTop: dframe.prop("scrollHeight")}, 200);
+                }
+            }, function error(response) {
                 console.log('There was an error running JQL');
                 console.log(response.error)
             });
@@ -121,6 +129,10 @@
 
 
     <style>
+        #dataframe-section {
+            overflow: auto;
+        }
+
         .info,
         .success,
         .danger {
@@ -160,33 +172,57 @@
 
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
-                <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
-                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
+                <div class="col-xs-9" style="padding: 10px">
+                    <p style="margin: 0; font-size: 16px; font-weight: bold;">Hershey Chocolate Bars</p>
+                </div>
+                <div class="col-xs-3" style="padding: 10px">
+                    <button class="btn-primary add-obj" onclick="sendMPEvent('hershey chocolate bars', 'up')">Add
+                        Object
+                    </button>
+                    <button class="btn-danger rem-obj" onclick="sendMPEvent('hershey chocolate bars', 'down')">Remove
+                        Object
+                    </button>
                 </div>
             </div>
         </div>
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
-                <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
-                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
+                <div class="col-xs-9" style="padding: 10px">
+                    <p style="margin: 0; font-size: 16px; font-weight: bold;">Kraft Jet Puffed Jumbo Marshmallows</p>
+                </div>
+                <div class="col-xs-3" style="padding: 10px">
+                    <button class="btn-primary add-obj" onclick="sendMPEvent('kraft jet puffed marshmallows', 'up')">Add
+                        Object
+                    </button>
+                    <button class="btn-danger rem-obj" onclick="sendMPEvent('kraft jet puffed marshmallows', 'down')">
+                        Remove Object
+                    </button>
                 </div>
             </div>
         </div>
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
-                <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
-                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
+                <div class="col-xs-9" style="padding: 10px">
+                    <p style="margin: 0; font-size: 16px; font-weight: bold;">Nabisco Honey Maid Graham Crackers</p>
+                </div>
+                <div class="col-xs-3" style="padding: 10px">
+                    <button class="btn-primary add-obj"
+                            onclick="sendMPEvent('nabisco honey maid graham crackers', 'up')">Add Object
+                    </button>
+                    <button class="btn-danger rem-obj"
+                            onclick="sendMPEvent('nabisco honey maid graham cracker', 'down')">Remove Object
+                    </button>
                 </div>
             </div>
         </div>
         <div class="col-xs-12" style="border: 1px solid black;">
             <div class="row">
-                <div class="col-xs-3 col-xs-offset-9" style="padding: 10px">
-                    <button class="btn-primary add-obj" onclick="sendMPEvent('add')">Add Object</button>
-                    <button class="btn-danger rem-obj" onclick="sendMPEvent('remove')">Remove Object</button>
+                <div class="col-xs-9" style="padding: 10px">
+                    <p style="margin: 0; font-size: 16px; font-weight: bold;">Fire</p>
+                </div>
+                <div class="col-xs-3" style="padding: 10px">
+                    <button class="btn-primary add-obj" onclick="sendMPEvent('fire', 'up')">Add Object</button>
+                    <button class="btn-danger rem-obj" onclick="sendMPEvent('fire', 'down')">Remove Object</button>
                 </div>
             </div>
         </div>
