@@ -1,2 +1,4 @@
 # Remove All IDEA Files
 *.idea
+
+.idea/workspace.xml

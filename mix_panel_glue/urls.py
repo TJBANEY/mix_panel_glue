@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-from .views import view_home, mix_panel
+from .views import view_home, mix_panel, mix_panel_queue
 
 urlpatterns = [
     path('', view_home),
     path('mixpanel/', mix_panel),
+    path('mixpanel_queue/', mix_panel_queue),
     path('admin/', admin.site.urls),
 ]

@@ -1,0 +1,6 @@
+events::{"event":"Sent Message","properties":{"token":"a386ab7d6aaff75a01f364c63cb681c3","distinct_id":"198909127","time":1520089931,"mp_lib":"python","$lib_version":"4.3.2"}}
+events::{"event":"Plan Upgraded","properties":{"token":"a386ab7d6aaff75a01f364c63cb681c3","distinct_id":"198909127","time":1520089931,"mp_lib":"python","$lib_version":"4.3.2","Old Plan":"Business","New Plan":"Premium"}}
+people::{"$token":"a386ab7d6aaff75a01f364c63cb681c3","$time":1520089931514,"$distinct_id":"198909127","$set":{"$first_name":"Jane","$last_name":"Doe","$email":"jdoe@gmail.com","$phone":"1112224444","Favorite Color":"blue"},"$ignore_time":"true"}
+people::{"$token":"a386ab7d6aaff75a01f364c63cb681c3","$time":1520089931514,"$distinct_id":"198909127","$append":{"Favorite Fruits":"Apples"}}
+people::{"$token":"a386ab7d6aaff75a01f364c63cb681c3","$time":1520089931514,"$distinct_id":"198909127","$append":{"$transactions":{"$amount":9.99}}}
+people::{"$token":"a386ab7d6aaff75a01f364c63cb681c3","$time":1520089931514,"$distinct_id":"198909127","$append":{"$transactions":{"$time":"2013-01-02T09:32:00","$amount":30.5}}}
